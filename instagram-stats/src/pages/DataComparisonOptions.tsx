@@ -31,22 +31,39 @@ export const DataComparisonOptions = ({
       </p>
 
       <div className="flex flex-wrap col-span-2">
-        {options.map((option, index) => (
-          <div key={index} className="w-1/2 h-auto p-2">
-            <MiniCardProps
-              title={option.label}
-              description={option.description}
-              checkboxArea={
-                <CustomCheckBox
-                  defaultChecked={false}
-                  onChange={(isChecked) =>
-                    onCheckboxChange(option.label, isChecked)
-                  }
-                />
-              }
-            />
-          </div>
-        ))}
+        {options.map((option, index) =>
+          option.label != "Pending Follow Requests" ? (
+            <div key={index} className="w-1/2 h-auto p-2 opacity-50 pointer-events-none">
+              <MiniCardProps
+                title={option.label}
+                description={option.description}
+                checkboxArea={
+                  <CustomCheckBox
+                    defaultChecked={false}
+                    onChange={(isChecked) =>
+                      onCheckboxChange(option.label, isChecked)
+                    }
+                  />
+                }
+              />
+            </div>
+          ) : (
+            <div key={index} className="w-1/2 h-auto p-2">
+              <MiniCardProps
+                title={option.label}
+                description={option.description}
+                checkboxArea={
+                  <CustomCheckBox
+                    defaultChecked={false}
+                    onChange={(isChecked) =>
+                      onCheckboxChange(option.label, isChecked)
+                    }
+                  />
+                }
+              />
+            </div>
+          )
+        )}
       </div>
 
       <div className="flex justify-center pt-4">
