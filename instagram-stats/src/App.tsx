@@ -1,17 +1,15 @@
 import { useState } from "react";
 import "./App.css";
-import { MiniCardProps } from "./components/MiniCard";
 import { CustomDropzone } from "./components/CustomDropzone";
-// import { Button } from '@mui/material'
-import { CustomCheckBox } from "./components/CustomCheckBox";
-import { Button, CircularProgress } from "@mui/material";
-import StackedBarChartIcon from "@mui/icons-material/StackedBarChart";
+import { CircularProgress } from "@mui/material";
 import { Instagram } from "@mui/icons-material";
+import { DataComparisonOptions } from "./pages/DataComparisonOptions";
 
 function App() {
   const [files, setFiles] = useState<File[]>([]); //to track uploaded files
   const [checkedItems, setCheckedItems] = useState<Record<string, boolean>>({}); //to track selected checkboxes
   const [loadingState, setLoadingState] = useState(false); //to track loaded state
+  const [steps, setSteps] = useState(0); //to track steps
 
   //Extract selected labels based on checked items
   const selectedLabels = Object.entries(checkedItems)
@@ -72,6 +70,10 @@ function App() {
       );
       console.log(`Files matching label "${label}":`, matchingFiles);
     });
+
+    setLoadingState(true); // Set loading state to true
+    setSteps(1); // Move to the next step
+    setLoadingState(false); // Set loading state to false
   };
 
   return (
@@ -89,44 +91,25 @@ function App() {
 
           {loadingState && <CircularProgress />}
           {/* Section 2: Data Comparison Options */}
-          <div>
-            <h2 className="font-bold text-lg">Data Comparison Options</h2>
-            <p className="text-gray-500 text-sm pb-2">
-              Select which data comparisons you'd like to analyze:
-            </p>
-
-            <div className="flex flex-wrap col-span-2">
-              {dataComparisonOptions.map((option, index) => (
-                <div key={index} className="w-1/2 h-auto p-2">
-                  <MiniCardProps
-                    key={index}
-                    title={option.label}
-                    description={option.description}
-                    checkboxArea={
-                      <CustomCheckBox
-                        defaultChecked={false}
-                        onChange={(isChecked) =>
-                          handleCheckboxChange(option.label, isChecked)
-                        }
-                      />
-                    }
-                  />{" "}
-                </div>
-              ))}
+          {steps == 0 ? (
+            <div>
+              <DataComparisonOptions
+                options={dataComparisonOptions}
+                onCheckboxChange={handleCheckboxChange}
+                onSubmit={() => handleSubmission(files)}
+                isLoading={loadingState}
+                hasSelectedOptions={selectedLabels.length > 0}
+              />
             </div>
+          ) : null}
 
-            <div className="flex justify-center pt-4">
-              <Button
-                variant="contained"
-                color="primary"
-                sx={{ boxShadow: "none", gap: 1, backgroundColor: "black" }}
-                onClick={() => handleSubmission(files)}
-              >
-                <StackedBarChartIcon />
-                <p>Analyze Data</p>
-              </Button>
+          {/* Section 3: Results */}
+          {steps == 1 ? (
+            <div>
+              <h2 className="font-bold text-lg">Results</h2>
+              {/* <p className="text-gray-500 text-sm pb-2"></p> */}
             </div>
-          </div>
+          ) : null}
         </div>
       </div>
     </>
