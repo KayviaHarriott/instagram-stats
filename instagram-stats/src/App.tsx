@@ -1,15 +1,16 @@
 import { useState } from "react";
 import "./App.css";
 import { MiniCardProps } from "./components/MiniCard";
-// import { CustomDropzone } from './components/CustomDropzone'
+import { CustomDropzone } from "./components/CustomDropzone";
 // import { Button } from '@mui/material'
 import { CustomCheckBox } from "./components/CustomCheckBox";
 import { Button } from "@mui/material";
-import StackedBarChartIcon from '@mui/icons-material/StackedBarChart';
+import StackedBarChartIcon from "@mui/icons-material/StackedBarChart";
+import { Instagram } from "@mui/icons-material";
 
 function App() {
   // // const [count, setCount] = useState(0)
-  // const [files, setFiles] = useState<File[]>([]);
+  const [files, setFiles] = useState<File[]>([]);
   // const [options, setOptions] = useState<string[]>([]);
 
   // // Moved `useState` for checked items to the top level
@@ -17,10 +18,10 @@ function App() {
 
   // const items = ['Instagram', 'Facebook', 'TikTok', 'X (Twitter)'];
 
-  // const handleFiles = (files: File[]) => {
-  //   setFiles(files);
-  //   console.log("Received files:", files);
-  // };
+  const handleFiles = (files: File[]) => {
+    setFiles(files);
+    console.log("Received files:", files);
+  };
 
   // Handle changes in the checkboxes
   const handleCheckboxChange = (label: string, isChecked: boolean) => {
@@ -95,40 +96,61 @@ function App() {
     },
   ];
 
+  console.log(files);
   return (
     <>
-      <p>Data Comparison Options</p>
-      <p>Select which data comparisons you'd like to analyze:</p>
-
-      <div className="flex flex-wrap col-span-2">
-        {dataComparisonOptions.map((option, index) => (
-          <div key={index} className="w-1/2 h-auto p-2">
-            <MiniCardProps
-              key={index}
-              title={option.label}
-              description={option.description}
-              checkboxArea={
-                <CustomCheckBox
-                  defaultChecked={false}
-                  onChange={(isChecked) =>
-                    handleCheckboxChange(option.label, isChecked)
-                  }
-                />
-              }
-            />{" "}
+   <div className="flex w-full justify-center pt-2">
+      <div className="flex flex-col gap-6 max-w-[800px] w-full">
+          {/* Section 1: Instagram Data Viewer*/}
+          <div>
+            <div className="flex gap-1"><Instagram/><h2 className="font-bold text-lg pb-2">Instagram Data Viewer</h2></div>
+            <CustomDropzone onFilesSelected={handleFiles} />
           </div>
-        ))}
+    
+          {/* Section 2: Data Comparison Options */}
+          <div>
+            <h2 className="font-bold text-lg">Data Comparison Options</h2>
+            <p className="text-gray-500 text-sm pb-2">
+              Select which data comparisons you'd like to analyze:
+            </p>
+    
+            <div className="flex flex-wrap col-span-2">
+              {dataComparisonOptions.map((option, index) => (
+                <div key={index} className="w-1/2 h-auto p-2">
+                  <MiniCardProps
+                    key={index}
+                    title={option.label}
+                    description={option.description}
+                    checkboxArea={
+                      <CustomCheckBox
+                        defaultChecked={false}
+                        onChange={(isChecked) =>
+                          handleCheckboxChange(option.label, isChecked)
+                        }
+                      />
+                    }
+                  />{" "}
+                </div>
+              ))}
+            </div>
+    
+           <div className="flex justify-center pt-4">
+              <Button
+                variant="contained"
+                color="primary"
+                sx={{ boxShadow: "none", gap: 1, backgroundColor: "black" }}
+                onClick={() => console.log(selectedLabels)}
+              >
+                <StackedBarChartIcon />
+                <p>Analyze Data</p>
+              </Button>
+           </div>
+          </div>
       </div>
+   </div>
 
-      <Button variant="contained" color="primary" sx={{boxShadow: 'none'}} onClick={() => console.log(selectedLabels)}>
-        <StackedBarChartIcon />   
-        <p>Analyze Data</p>
-      </Button>
-
-      
       <div>
         {/* Custom Dropzone component */}
-        {/* <CustomDropzone onFilesSelected={handleFiles} /> */}
 
         {/* Button to trigger file processing */}
         {/* <Button
