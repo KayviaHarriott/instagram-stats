@@ -54,3 +54,4 @@ npm run dev
 
 - no information is stored
 - the notification tab can be checked, for network calls
+- add creator of project link
