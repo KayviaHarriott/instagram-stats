@@ -4,6 +4,7 @@ import { CustomDropzone } from "./components/CustomDropzone";
 import { CircularProgress } from "@mui/material";
 import { Instagram } from "@mui/icons-material";
 import { DataComparisonOptions } from "./pages/DataComparisonOptions";
+import { PendingFollowRequests } from "./components/PendingFollowRequests";
 
 function App() {
   const [files, setFiles] = useState<File[]>([]); //to track uploaded files
@@ -105,15 +106,27 @@ function App() {
           ) : null}
 
           {/* Section 3: Results */}
+
+          {steps == 1 ? (
+            <div>
+              <h2 className="font-bold text-lg pb-2">Results</h2>
+              {selectedLabels.map((label, index) => (
+                <div key={index}>
+                  {/* {label === "Followers/Following" ? (<p>follower/following</p>) : null}
+                    {label === "Hide Story From" ? (<p>hide story</p>) : null} */}
+                  {label === "Pending Follow Requests" ? (
+                    <PendingFollowRequests file={matchingFiles} />
+                  ) : null}
+                  {/* {label === "Restricted Profiles" ? (<p>restricted profiles</p>) : null}                    */}
+                </div>
+              ))}
+
+              {/* {console.log(selectedLabels)}
+              {console.log(checkedItems)} */}
+              {/* <p className="text-gray-500 text-sm pb-2"></p> */}
+            </div>
+          ) : null}
          
-            {steps == 1 ? (
-              <>
-                {console.log(matchingFiles)}
-                <h2 className="font-bold text-lg">Results</h2>
-                {/* <p className="text-gray-500 text-sm pb-2"></p> */}
-              </>
-            ) : null}
-  
         </div>
       </div>
     </>
