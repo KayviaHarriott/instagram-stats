@@ -10,7 +10,7 @@ function App() {
   const [checkedItems, setCheckedItems] = useState<Record<string, boolean>>({}); //to track selected checkboxes
   const [loadingState, setLoadingState] = useState(false); //to track loaded state
   const [steps, setSteps] = useState(0); //to track steps
-
+  const [matchingFiles, setMatchingFiles] = useState<File[]>([]); //to track matching files
   //Extract selected labels based on checked items
   const selectedLabels = Object.entries(checkedItems)
     .filter(([, isChecked]) => isChecked)
@@ -69,6 +69,7 @@ function App() {
         )
       );
       console.log(`Files matching label "${label}":`, matchingFiles);
+      setMatchingFiles((prev) => [...prev, ...matchingFiles]); // Add matching files to the state
     });
 
     setLoadingState(true); // Set loading state to true
@@ -104,12 +105,15 @@ function App() {
           ) : null}
 
           {/* Section 3: Results */}
-          {steps == 1 ? (
-            <div>
-              <h2 className="font-bold text-lg">Results</h2>
-              {/* <p className="text-gray-500 text-sm pb-2"></p> */}
-            </div>
-          ) : null}
+         
+            {steps == 1 ? (
+              <>
+                {console.log(matchingFiles)}
+                <h2 className="font-bold text-lg">Results</h2>
+                {/* <p className="text-gray-500 text-sm pb-2"></p> */}
+              </>
+            ) : null}
+  
         </div>
       </div>
     </>
