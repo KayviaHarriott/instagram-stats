@@ -96,7 +96,35 @@ function App() {
     },
   ];
 
-  console.log(files);
+
+  const handleSubmission = (files: File | File[]): void => {
+    // Ensure 'files' is always treated as an array
+    const fileArray = Array.isArray(files) ? files : [files];
+  
+    // Define a mapping from selected labels to corresponding file name patterns
+    const labelToFileMap: Record<string, string[]> = {
+      'Followers/Following': ['followers_1.json', 'following.json'],
+      'Hide Story From': ['hide_story_from.json'],
+      'Pending Follow Requests': ['pending_follow_requests.json'],
+      'Restricted Profiles': ['restricted_profiles.json'],
+    };
+  
+    // Loop through the selectedLabels
+    selectedLabels.forEach((label) => {
+      // Get the corresponding files for the label
+      const filePatterns = labelToFileMap[label] || [];
+  
+      // Filter files based on name matching any of the filePatterns
+      const matchingFiles = fileArray.filter((file) =>
+        filePatterns.some((pattern) => file.name.toLowerCase().includes(pattern.toLowerCase()))
+      );
+      
+      console.log(`Files matching label "${label}":`, matchingFiles);
+    });
+  };
+  
+
+  
   return (
     <>
    <div className="flex w-full justify-center pt-2">
@@ -139,7 +167,7 @@ function App() {
                 variant="contained"
                 color="primary"
                 sx={{ boxShadow: "none", gap: 1, backgroundColor: "black" }}
-                onClick={() => console.log(selectedLabels)}
+                onClick={() => handleSubmission(files)}
               >
                 <StackedBarChartIcon />
                 <p>Analyze Data</p>
