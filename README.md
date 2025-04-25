@@ -6,3 +6,7 @@ A checker for instagram stats
 - add sort by ascending and descending
 - add tutorial using js zoom tool
 - add tutorial for how to get data, show tutorial button
+
+## notice
+- no information is stored
+- the notification tab can be checked, for network calls
