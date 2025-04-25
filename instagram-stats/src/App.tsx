@@ -81,7 +81,7 @@ function App() {
 
     setTimeout(() => {
       setLoadingState(false);
-    }, 5000);
+    }, 3000);
 
     setSteps(1); // Move to the next step AFTER the 5-second delay
   };
