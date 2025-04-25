@@ -1,7 +1,7 @@
 import { useState } from "react";
 import "./App.css";
 import { CustomDropzone } from "./components/CustomDropzone";
-import { CircularProgress } from "@mui/material";
+import { Box, CircularProgress } from "@mui/material";
 import { Instagram } from "@mui/icons-material";
 import { DataComparisonOptions } from "./pages/DataComparisonOptions";
 import { PendingFollowRequests } from "./components/PendingFollowRequests";
@@ -75,7 +75,15 @@ function App() {
 
     setLoadingState(true); // Set loading state to true
     setSteps(1); // Move to the next step
-    setLoadingState(false); // Set loading state to false
+
+    // your matching logic here...
+    setLoadingState(true);
+
+    setTimeout(() => {
+      setLoadingState(false);
+    }, 5000);
+
+    setSteps(1); // Move to the next step AFTER the 5-second delay
   };
 
   return (
@@ -91,9 +99,14 @@ function App() {
             <CustomDropzone onFilesSelected={handleFiles} />
           </div>
 
-          {loadingState && <CircularProgress />}
+          {loadingState && (
+            <Box className="h-[50vh] rounded-2xl w-full bg-gray-100 flex items-center justify-center">
+              <CircularProgress />
+            </Box>
+          )}
+
           {/* Section 2: Data Comparison Options */}
-          {steps == 0 ? (
+          {steps == 0 && !loadingState ? (
             <div>
               <DataComparisonOptions
                 options={dataComparisonOptions}
@@ -107,7 +120,7 @@ function App() {
 
           {/* Section 3: Results */}
 
-          {steps == 1 ? (
+          {steps == 1 && !loadingState ? (
             <div>
               <h2 className="font-bold text-lg pb-2">Results</h2>
               {selectedLabels.map((label, index) => (
@@ -126,7 +139,6 @@ function App() {
               {/* <p className="text-gray-500 text-sm pb-2"></p> */}
             </div>
           ) : null}
-         
         </div>
       </div>
     </>
