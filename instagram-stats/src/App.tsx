@@ -1,87 +1,146 @@
-import { useState } from 'react'
-import './App.css'
-import { CustomDropzone } from './components/CustomDropzone'
-import { Button } from '@mui/material'
-import { CustomCheckBox } from './components/CustomCheckBox'
+import { useState } from "react";
+import "./App.css";
+import { MiniCardProps } from "./components/MiniCard";
+// import { CustomDropzone } from './components/CustomDropzone'
+// import { Button } from '@mui/material'
+import { CustomCheckBox } from "./components/CustomCheckBox";
+import { Button } from "@mui/material";
+import StackedBarChartIcon from '@mui/icons-material/StackedBarChart';
 
 function App() {
-  // const [count, setCount] = useState(0)
-  const [files, setFiles] = useState<File[]>([]);
-  const [options, setOptions] = useState<string[]>([]);
-  
-  // Moved `useState` for checked items to the top level
+  // // const [count, setCount] = useState(0)
+  // const [files, setFiles] = useState<File[]>([]);
+  // const [options, setOptions] = useState<string[]>([]);
+
+  // // Moved `useState` for checked items to the top level
   const [checkedItems, setCheckedItems] = useState<Record<string, boolean>>({});
 
-  const items = ['Instagram', 'Facebook', 'TikTok', 'X (Twitter)'];
+  // const items = ['Instagram', 'Facebook', 'TikTok', 'X (Twitter)'];
 
-  const handleFiles = (files: File[]) => {
-    setFiles(files);
-    console.log("Received files:", files);
-  };
+  // const handleFiles = (files: File[]) => {
+  //   setFiles(files);
+  //   console.log("Received files:", files);
+  // };
 
   // Handle changes in the checkboxes
-  const handleCheckboxChange = (item: string, isChecked: boolean) => {
-    setCheckedItems((prev) => ({ ...prev, [item]: isChecked }));
+  const handleCheckboxChange = (label: string, isChecked: boolean) => {
+    setCheckedItems((prev) => ({
+      ...prev,
+      [label]: isChecked,
+    }));
   };
 
-  // Get all the selected (checked) items
-  const getSelectedItems = () => {
-    return Object.keys(checkedItems).filter((key) => checkedItems[key]);
-  };
+  const selectedLabels = Object.entries(checkedItems)
+    .filter(([, isChecked]) => isChecked)
+    .map(([label]) => label);
 
-  // Handle the files and options selected
-  const handleFilesSelected = (files: File[], options: string[]) => {
-    const selectedOptions = getSelectedItems();
+  // // Get all the selected (checked) items
+  // const getSelectedItems = () => {
+  //   return Object.keys(checkedItems).filter((key) => checkedItems[key]);
+  // };
 
-    // Log all the selected options
-    for (const option of selectedOptions) {
-      console.log("Option selected:", option);
-    }
+  // // Handle the files and options selected
+  // const handleFilesSelected = (files: File[], options: string[]) => {
+  //   const selectedOptions = getSelectedItems();
 
-    for (const item of options) {
-      console.log("Option selected:", item);
-    }
-    // console.log("Received files:", files);
+  //   // Log all the selected options
+  //   for (const option of selectedOptions) {
+  //     console.log("Option selected:", option);
+  //   }
 
-    // Look for a specific file by name
-    const targetFile = files.find(file => file.name === "followers_1.json");
+  //   for (const item of options) {
+  //     console.log("Option selected:", item);
+  //   }
+  //   // console.log("Received files:", files);
 
-    if (targetFile) {
-      const reader = new FileReader();
-      reader.onload = (event) => {
-        try {
-          const result = event.target?.result as string;
-          const parsed = JSON.parse(result);
-          console.log("Parsed JSON data:", parsed);
+  //   // Look for a specific file by name
+  //   const targetFile = files.find(file => file.name === "followers_1.json");
 
-          // Do something with the parsed data
-        } catch (err) {
-          console.error("Error parsing JSON:", err);
-        }
-      };
-      reader.readAsText(targetFile);
-    } else {
-      console.warn("Couldn't find followers_1.json, honey 🧐");
-    }
-  };
+  //   if (targetFile) {
+  //     const reader = new FileReader();
+  //     reader.onload = (event) => {
+  //       try {
+  //         const result = event.target?.result as string;
+  //         const parsed = JSON.parse(result);
+  //         console.log("Parsed JSON data:", parsed);
+
+  //         // Do something with the parsed data
+  //       } catch (err) {
+  //         console.error("Error parsing JSON:", err);
+  //       }
+  //     };
+  //     reader.readAsText(targetFile);
+  //   } else {
+  //     console.warn("Couldn't find followers_1.json, honey 🧐");
+  //   }
+  // };
+
+  const dataComparisonOptions = [
+    {
+      label: "Followers/Following",
+      description:
+        "Compare your followers list with your following list to see who doesn't follow you back",
+    },
+    {
+      label: "Hide Story From",
+      description: "See which accounts you've chosen to hide your stories from",
+    },
+    {
+      label: "Pending Follow Requests",
+      description: "View accounts that haven't accepted your follow requests",
+    },
+    {
+      label: "Restricted Profiles",
+      description: "See which accounts you've restricted on Instagram",
+    },
+  ];
 
   return (
     <>
+      <p>Data Comparison Options</p>
+      <p>Select which data comparisons you'd like to analyze:</p>
+
+      <div className="flex flex-wrap col-span-2">
+        {dataComparisonOptions.map((option, index) => (
+          <div key={index} className="w-1/2 h-auto p-2">
+            <MiniCardProps
+              key={index}
+              title={option.label}
+              description={option.description}
+              checkboxArea={
+                <CustomCheckBox
+                  defaultChecked={false}
+                  onChange={(isChecked) =>
+                    handleCheckboxChange(option.label, isChecked)
+                  }
+                />
+              }
+            />{" "}
+          </div>
+        ))}
+      </div>
+
+      <Button variant="contained" color="primary" sx={{boxShadow: 'none'}} onClick={() => console.log(selectedLabels)}>
+        <StackedBarChartIcon />   
+        <p>Analyze Data</p>
+      </Button>
+
+      
       <div>
         {/* Custom Dropzone component */}
-        <CustomDropzone onFilesSelected={handleFiles} />
-        
+        {/* <CustomDropzone onFilesSelected={handleFiles} /> */}
+
         {/* Button to trigger file processing */}
-        <Button
+        {/* <Button
           variant="contained"
           color="primary"
           onClick={() => handleFilesSelected(files, options)}
         >
           Load
-        </Button>
+        </Button> */}
 
         {/* Render checkboxes for each item */}
-        <div>
+        {/* <div>
           {items.map((item) => (
             <div key={item}>
               <label style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
@@ -93,7 +152,7 @@ function App() {
               </label>
             </div>
           ))}
-        </div>
+        </div> */}
 
         {/* <a href="https://vite.dev" target="_blank">
           <img src={viteLogo} className="logo" alt="Vite logo" />
