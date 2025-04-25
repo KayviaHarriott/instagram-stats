@@ -50,6 +50,7 @@ npm run dev
 - add tutorial using js zoom tool
 - add tutorial for how to get data, show tutorial button
 - add creator of project link
+- could use characters to make layout fun
 
 ## Notice
 
