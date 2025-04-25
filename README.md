@@ -2,10 +2,10 @@
 
 A checker for instagram stats to check and analyze:
 
-- **Followers/Following**: Compare your followers list with your following list to see who doesn't follow you back
-- **Hide Story From**: See which accounts you've chosen to hide your stories from
-- **Pending Follow Requests**: View accounts that haven't accepted your follow requests
-- **Restricted Profiles**: See which accounts you've restricted on Instagram
+- <span style="color:grey;">**Followers/Following**: Compare your followers list with your following list to see who doesn't follow you back</span>
+- <span style="color:grey;">**Hide Story From**: See which accounts you've chosen to hide your stories from</span>
+- <span style="color:green;">**Pending Follow Requests**: View accounts that haven't accepted your follow requests **[LIVE]**</span>
+- <span style="color:grey;">**Restricted Profiles**: See which accounts you've restricted on Instagram</span>
 - **More to Come**
 
 ## Live Project
