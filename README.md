@@ -49,9 +49,9 @@ npm run dev
 - add sort by ascending and descending
 - add tutorial using js zoom tool
 - add tutorial for how to get data, show tutorial button
+- add creator of project link
 
 ## Notice
 
 - no information is stored
 - the notification tab can be checked, for network calls
-- add creator of project link
