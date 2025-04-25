@@ -10,7 +10,8 @@ A checker for instagram stats to check and analyze:
 
 ## Live Project
 
-[View Live Project](https://iganalyzer.netlify.app)
+<a href="https://iganalyzer.netlify.app" target="_blank">View Live Project</a>
+
 
 **\*NB:** Functionality only added for 'Pending Follow Requests'\*
 
