@@ -4,78 +4,21 @@ import { MiniCardProps } from "./components/MiniCard";
 import { CustomDropzone } from "./components/CustomDropzone";
 // import { Button } from '@mui/material'
 import { CustomCheckBox } from "./components/CustomCheckBox";
-import { Button } from "@mui/material";
+import { Button, CircularProgress } from "@mui/material";
 import StackedBarChartIcon from "@mui/icons-material/StackedBarChart";
 import { Instagram } from "@mui/icons-material";
 
 function App() {
-  // // const [count, setCount] = useState(0)
-  const [files, setFiles] = useState<File[]>([]);
-  // const [options, setOptions] = useState<string[]>([]);
+  const [files, setFiles] = useState<File[]>([]); //to track uploaded files
+  const [checkedItems, setCheckedItems] = useState<Record<string, boolean>>({}); //to track selected checkboxes
+  const [loadingState, setLoadingState] = useState(false); //to track loaded state
 
-  // // Moved `useState` for checked items to the top level
-  const [checkedItems, setCheckedItems] = useState<Record<string, boolean>>({});
-
-  // const items = ['Instagram', 'Facebook', 'TikTok', 'X (Twitter)'];
-
-  const handleFiles = (files: File[]) => {
-    setFiles(files);
-    console.log("Received files:", files);
-  };
-
-  // Handle changes in the checkboxes
-  const handleCheckboxChange = (label: string, isChecked: boolean) => {
-    setCheckedItems((prev) => ({
-      ...prev,
-      [label]: isChecked,
-    }));
-  };
-
+  //Extract selected labels based on checked items
   const selectedLabels = Object.entries(checkedItems)
     .filter(([, isChecked]) => isChecked)
     .map(([label]) => label);
 
-  // // Get all the selected (checked) items
-  // const getSelectedItems = () => {
-  //   return Object.keys(checkedItems).filter((key) => checkedItems[key]);
-  // };
-
-  // // Handle the files and options selected
-  // const handleFilesSelected = (files: File[], options: string[]) => {
-  //   const selectedOptions = getSelectedItems();
-
-  //   // Log all the selected options
-  //   for (const option of selectedOptions) {
-  //     console.log("Option selected:", option);
-  //   }
-
-  //   for (const item of options) {
-  //     console.log("Option selected:", item);
-  //   }
-  //   // console.log("Received files:", files);
-
-  //   // Look for a specific file by name
-  //   const targetFile = files.find(file => file.name === "followers_1.json");
-
-  //   if (targetFile) {
-  //     const reader = new FileReader();
-  //     reader.onload = (event) => {
-  //       try {
-  //         const result = event.target?.result as string;
-  //         const parsed = JSON.parse(result);
-  //         console.log("Parsed JSON data:", parsed);
-
-  //         // Do something with the parsed data
-  //       } catch (err) {
-  //         console.error("Error parsing JSON:", err);
-  //       }
-  //     };
-  //     reader.readAsText(targetFile);
-  //   } else {
-  //     console.warn("Couldn't find followers_1.json, honey 🧐");
-  //   }
-  // };
-
+  //Data Comparisons to check file types
   const dataComparisonOptions = [
     {
       label: "Followers/Following",
@@ -96,52 +39,62 @@ function App() {
     },
   ];
 
+  //Handle file selection from the dropzone
+  const handleFiles = (files: File[]) => {
+    setFiles(files);
+  };
 
+  // Handle changes in the checkboxes
+  const handleCheckboxChange = (label: string, isChecked: boolean) => {
+    setCheckedItems((prev) => ({
+      ...prev,
+      [label]: isChecked,
+    }));
+  };
+
+  // Handle form submission
   const handleSubmission = (files: File | File[]): void => {
-    // Ensure 'files' is always treated as an array
-    const fileArray = Array.isArray(files) ? files : [files];
-  
-    // Define a mapping from selected labels to corresponding file name patterns
+    const fileArray = Array.isArray(files) ? files : [files]; //Ensure 'files' is always treated as an array
     const labelToFileMap: Record<string, string[]> = {
-      'Followers/Following': ['followers_1.json', 'following.json'],
-      'Hide Story From': ['hide_story_from.json'],
-      'Pending Follow Requests': ['pending_follow_requests.json'],
-      'Restricted Profiles': ['restricted_profiles.json'],
-    };
-  
+      "Followers/Following": ["followers_1.json", "following.json"],
+      "Hide Story From": ["hide_story_from.json"],
+      "Pending Follow Requests": ["pending_follow_requests.json"],
+      "Restricted Profiles": ["restricted_profiles.json"],
+    }; // Define a mapping from selected labels to corresponding file name patterns
+
     // Loop through the selectedLabels
     selectedLabels.forEach((label) => {
-      // Get the corresponding files for the label
       const filePatterns = labelToFileMap[label] || [];
-  
-      // Filter files based on name matching any of the filePatterns
       const matchingFiles = fileArray.filter((file) =>
-        filePatterns.some((pattern) => file.name.toLowerCase().includes(pattern.toLowerCase()))
+        filePatterns.some((pattern) =>
+          file.name.toLowerCase().includes(pattern.toLowerCase())
+        )
       );
-      
       console.log(`Files matching label "${label}":`, matchingFiles);
     });
   };
-  
 
-  
   return (
     <>
-   <div className="flex w-full justify-center pt-2">
-      <div className="flex flex-col gap-6 max-w-[800px] w-full">
+      <div className="flex w-full justify-center pt-2">
+        <div className="flex flex-col gap-6 max-w-[800px] w-full">
           {/* Section 1: Instagram Data Viewer*/}
           <div>
-            <div className="flex gap-1"><Instagram/><h2 className="font-bold text-lg pb-2">Instagram Data Viewer</h2></div>
+            <div className="flex gap-1">
+              <Instagram />
+              <h2 className="font-bold text-lg pb-2">Instagram Data Viewer</h2>
+            </div>
             <CustomDropzone onFilesSelected={handleFiles} />
           </div>
-    
+
+          {loadingState && <CircularProgress />}
           {/* Section 2: Data Comparison Options */}
           <div>
             <h2 className="font-bold text-lg">Data Comparison Options</h2>
             <p className="text-gray-500 text-sm pb-2">
               Select which data comparisons you'd like to analyze:
             </p>
-    
+
             <div className="flex flex-wrap col-span-2">
               {dataComparisonOptions.map((option, index) => (
                 <div key={index} className="w-1/2 h-auto p-2">
@@ -161,8 +114,8 @@ function App() {
                 </div>
               ))}
             </div>
-    
-           <div className="flex justify-center pt-4">
+
+            <div className="flex justify-center pt-4">
               <Button
                 variant="contained"
                 color="primary"
@@ -172,58 +125,10 @@ function App() {
                 <StackedBarChartIcon />
                 <p>Analyze Data</p>
               </Button>
-           </div>
-          </div>
-      </div>
-   </div>
-
-      <div>
-        {/* Custom Dropzone component */}
-
-        {/* Button to trigger file processing */}
-        {/* <Button
-          variant="contained"
-          color="primary"
-          onClick={() => handleFilesSelected(files, options)}
-        >
-          Load
-        </Button> */}
-
-        {/* Render checkboxes for each item */}
-        {/* <div>
-          {items.map((item) => (
-            <div key={item}>
-              <label style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                <CustomCheckBox
-                  defaultChecked={false}
-                  onChange={(isChecked) => handleCheckboxChange(item, isChecked)}
-                />
-                {item}
-              </label>
             </div>
-          ))}
-        </div> */}
-
-        {/* <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a> */}
+          </div>
+        </div>
       </div>
-
-      {/* <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p> */}
     </>
   );
 }
