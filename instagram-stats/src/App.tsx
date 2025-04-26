@@ -1,7 +1,7 @@
 import { useState } from "react";
 import "./App.css";
 import { CustomDropzone } from "./components/CustomDropzone";
-import { Box, CircularProgress } from "@mui/material";
+import { Box, Button, CircularProgress } from "@mui/material";
 import { Instagram } from "@mui/icons-material";
 import { DataComparisonOptions } from "./pages/DataComparisonOptions";
 import { PendingFollowRequests } from "./components/PendingFollowRequests";
@@ -14,16 +14,19 @@ function App() {
   const [checkedItems, setCheckedItems] = useState<Record<string, boolean>>({}); //to track selected checkboxes
   const [loadingState, setLoadingState] = useState(false); //to track loaded state
   const [steps, setSteps] = useState(0); //to track steps
-  const [matchingFiles, setMatchingFiles] = useState<Record<string, File[]>>({});
+  const [matchingFiles, setMatchingFiles] = useState<Record<string, File[]>>(
+    {}
+  );
 
   //Extract selected labels based on checked items
   const selectedLabels = Object.entries(checkedItems)
-  .filter(([, isChecked]) => isChecked)
-  .map(([label]) => label)
-  .sort((a, b) => (a === "Followers/Following" ? 1 : b === "Followers/Following" ? -1 : 0));
+    .filter(([, isChecked]) => isChecked)
+    .map(([label]) => label)
+    .sort((a, b) =>
+      a === "Followers/Following" ? 1 : b === "Followers/Following" ? -1 : 0
+    );
 
-
-  console.log("___App has started___")
+  console.log("___App has started___");
   // console.log("Test Data: ", import.meta.env.VITE_ANALYTICS_ID);
   //Data Comparisons to check file types
   const dataComparisonOptions = [
@@ -63,25 +66,25 @@ function App() {
   const handleSubmission = (files: File | File[]): void => {
     const fileArray = Array.isArray(files) ? files : [files];
 
-  const labelToFileMap: Record<string, string[]> = {
-    "Followers/Following": ["followers_1.json", "following.json"],
-    "Hide Story From": ["hide_story_from.json"],
-    "Pending Follow Requests": ["pending_follow_requests.json"],
-    "Restricted Profiles": ["restricted_profiles.json"],
-  };
+    const labelToFileMap: Record<string, string[]> = {
+      "Followers/Following": ["followers_1.json", "following.json"],
+      "Hide Story From": ["hide_story_from.json"],
+      "Pending Follow Requests": ["pending_follow_requests.json"],
+      "Restricted Profiles": ["restricted_profiles.json"],
+    };
 
-  const matched: Record<string, File[]> = {};
+    const matched: Record<string, File[]> = {};
 
-  selectedLabels.forEach((label) => {
-    const filePatterns = labelToFileMap[label] || [];
-    matched[label] = fileArray.filter((file) =>
-      filePatterns.some((pattern) =>
-        file.name.toLowerCase().includes(pattern.toLowerCase())
-      )
-    );
-  });
+    selectedLabels.forEach((label) => {
+      const filePatterns = labelToFileMap[label] || [];
+      matched[label] = fileArray.filter((file) =>
+        filePatterns.some((pattern) =>
+          file.name.toLowerCase().includes(pattern.toLowerCase())
+        )
+      );
+    });
 
-  setMatchingFiles(matched);
+    setMatchingFiles(matched);
     setLoadingState(true); // Set loading state to true
     setSteps(1); // Move to the next step
 
@@ -91,7 +94,7 @@ function App() {
     setTimeout(() => {
       setLoadingState(false);
     }, 2500);
-    setLoadingState(false)
+    setLoadingState(false);
 
     setSteps(1); // Move to the next step AFTER the 5-second delay
   };
@@ -102,9 +105,29 @@ function App() {
         <div className="flex flex-col gap-6 max-w-[800px] w-full pb-4">
           {/* Section 1: Instagram Data Viewer*/}
           <div>
-            <div className="flex gap-1">
-              <Instagram />
-              <h2 className="font-bold text-lg pb-2">Instagram Data Viewer</h2>
+            <div className="flex justify-between gap-2 pb-3">
+              <div className="flex gap-1">
+                <Instagram />
+                <h2 className="font-bold text-lg pb-2">
+                  Instagram Data Viewer
+                </h2>
+              </div>
+              <a href="https://buymeacoffee.com/kaythedev" target="_blank">
+                <Button
+                  sx={{
+                    textTransform: "none",
+                    backgroundColor: "#FFDD00",
+                    color: "black",
+                    fontWeight: "bold",
+                  }}
+                  className="flex justify-between gap-4 w-fit"
+                >
+                  <div className="flex gap-1 justify-center items-center">
+                    <img className="h-5 w-5" src="coffee-cup.png" />
+                    {/* <p>Buy Me a Coffee?</p> */}
+                  </div>
+                </Button>
+              </a>
             </div>
             <CustomDropzone onFilesSelected={handleFiles} />
           </div>
@@ -129,7 +152,6 @@ function App() {
           ) : null}
 
           {/* Section 3: Results */}
-
           {steps == 1 && !loadingState ? (
             <div>
               <h2 className="font-bold text-lg pb-2">Results</h2>
@@ -142,8 +164,12 @@ function App() {
                     {label === "Pending Follow Requests" ? (
                       <PendingFollowRequests file={matchingFiles[label]} />
                     ) : null}
-                    {label === "Restricted Profiles" ? (<RestrictedProfiles file={matchingFiles[label]}/>) : null}        
-                    {label === "Followers/Following" ? (<NonFollowers file={matchingFiles[label]}/>) : null}           
+                    {label === "Restricted Profiles" ? (
+                      <RestrictedProfiles file={matchingFiles[label]} />
+                    ) : null}
+                    {label === "Followers/Following" ? (
+                      <NonFollowers file={matchingFiles[label]} />
+                    ) : null}
                   </div>
                 ))}
               </div>
