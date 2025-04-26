@@ -124,12 +124,32 @@ function App() {
                 >
                   <div className="flex gap-1 justify-center items-center">
                     <img className="h-5 w-5" src="coffee-cup.png" />
-                    {/* <p>Buy Me a Coffee?</p> */}
+                    <p>Buy Me a Coffee?</p>
                   </div>
                 </Button>
               </a>
             </div>
+            <Box className="mb-2 text-center bg-gray-100 p-2 rounded" sx={{}}>
+              <h2 className="text-xl font-bold text-gray-800">
+                How To Download Your Instagram Data
+              </h2>
+              <p className="text-gray-600">
+                Follow these steps to download your Instagram data:&nbsp;
+                <a
+                  href="https://help.instagram.com/181231772500920?helpref=faq_content"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-blue-600 underline hover:text-blue-800"
+                >
+                  Instagram Help Guide
+                </a>
+              </p>
+              <p className="text-gray-600">
+                Ensure you choose the <strong>Export as JSON</strong> format.
+              </p>
+            </Box>
             <CustomDropzone onFilesSelected={handleFiles} />
+            
           </div>
 
           {loadingState && (

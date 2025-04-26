@@ -88,6 +88,7 @@ export const CustomDropzone: React.FC<DropZoneProps> = ({
         Upload the extracted folder from Instagram's data export (e.g.,
         instagram-username/)
       </p>
+      
       {uploaded && (
         <p className="text-green-600 font-medium pt-1">
           ✅ Folder uploaded successfully!
