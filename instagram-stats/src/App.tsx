@@ -17,6 +17,8 @@ function App() {
     .filter(([, isChecked]) => isChecked)
     .map(([label]) => label);
 
+  console.log("___App has started___")
+  console.log("Test Data: ", import.meta.env.VITE_ANALYTICS_ID);
   //Data Comparisons to check file types
   const dataComparisonOptions = [
     {
