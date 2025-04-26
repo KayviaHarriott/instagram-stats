@@ -11,7 +11,10 @@ A checker for instagram stats to check and analyze:
 ## Live Project
 
 <a href="https://iganalyzer.netlify.app" target="_blank">View Live Project</a>
+[![Netlify Status](https://api.netlify.com/api/v1/badges/b5612541-c185-4339-9de9-f5f4f7679b7a/deploy-status)](https://app.netlify.com/sites/iganalyzer/deploys)
 
+## Develop/Beta Link
+<a href="https://develop--iganalyzer.netlify.app" target="_blank">View Live Beta Project</a>
 
 **\*NB:** Functionality only added for 'Pending Follow Requests'\*
 
