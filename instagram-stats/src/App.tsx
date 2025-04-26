@@ -23,6 +23,8 @@ function App() {
   .sort((a, b) => (a === "Followers/Following" ? 1 : b === "Followers/Following" ? -1 : 0));
 
 
+  console.log("___App has started___")
+  console.log("Test Data: ", import.meta.env.VITE_ANALYTICS_ID);
   //Data Comparisons to check file types
   const dataComparisonOptions = [
     {
