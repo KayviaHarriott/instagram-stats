@@ -15,5 +15,9 @@ export default defineConfig(({ mode }) => {
           id: `G-${GOOGLE_TAG}`,
         }
       })],
+      define: {
+        __VITE_GTAG_ID__: JSON.stringify(GOOGLE_TAG),
+      }
+      
   };
 });
