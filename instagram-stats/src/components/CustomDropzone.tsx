@@ -1,5 +1,5 @@
 import { Button } from "@mui/material";
-import React, { useRef, useEffect, useCallback } from "react";
+import React, { useRef, useEffect, useCallback, useState } from "react";
 import { useDropzone } from "react-dropzone";
 
 interface DropZoneProps {
@@ -9,11 +9,13 @@ interface DropZoneProps {
 export const CustomDropzone: React.FC<DropZoneProps> = ({
   onFilesSelected,
 }) => {
+  const [uploaded, setUploaded] = useState(false);
   const inputRef = useRef<HTMLInputElement | null>(null);
 
   const onDrop = useCallback(
     (acceptedFiles: File[]) => {
       onFilesSelected(acceptedFiles);
+      setUploaded(true); // Show confirmation
     },
     [onFilesSelected]
   );
@@ -86,6 +88,11 @@ export const CustomDropzone: React.FC<DropZoneProps> = ({
         Upload the extracted folder from Instagram's data export (e.g.,
         instagram-username/)
       </p>
+      {uploaded && (
+        <p className="text-green-600 font-medium pt-1">
+          ✅ Folder uploaded successfully!
+        </p>
+      )}
     </div>
   );
 };
