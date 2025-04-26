@@ -51,6 +51,8 @@ npm run dev
 - add tutorial for how to get data, show tutorial button
 - add creator of project link
 - could use characters to make layout fun
+- add check for if folder is uploaded to start analyze data button
+- make mobile responsive
 
 ## Notice
 

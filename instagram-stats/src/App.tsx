@@ -5,17 +5,23 @@ import { Box, CircularProgress } from "@mui/material";
 import { Instagram } from "@mui/icons-material";
 import { DataComparisonOptions } from "./pages/DataComparisonOptions";
 import { PendingFollowRequests } from "./components/PendingFollowRequests";
+import { HideStoryFrom } from "./components/HiddenStory";
+import { RestrictedProfiles } from "./components/RestrictedProfiles";
+import { NonFollowers } from "./components/NonFollowers";
 
 function App() {
   const [files, setFiles] = useState<File[]>([]); //to track uploaded files
   const [checkedItems, setCheckedItems] = useState<Record<string, boolean>>({}); //to track selected checkboxes
   const [loadingState, setLoadingState] = useState(false); //to track loaded state
   const [steps, setSteps] = useState(0); //to track steps
-  const [matchingFiles, setMatchingFiles] = useState<File[]>([]); //to track matching files
+  const [matchingFiles, setMatchingFiles] = useState<Record<string, File[]>>({});
+
   //Extract selected labels based on checked items
   const selectedLabels = Object.entries(checkedItems)
-    .filter(([, isChecked]) => isChecked)
-    .map(([label]) => label);
+  .filter(([, isChecked]) => isChecked)
+  .map(([label]) => label)
+  .sort((a, b) => (a === "Followers/Following" ? 1 : b === "Followers/Following" ? -1 : 0));
+
 
   //Data Comparisons to check file types
   const dataComparisonOptions = [
@@ -53,26 +59,27 @@ function App() {
 
   // Handle form submission
   const handleSubmission = (files: File | File[]): void => {
-    const fileArray = Array.isArray(files) ? files : [files]; //Ensure 'files' is always treated as an array
-    const labelToFileMap: Record<string, string[]> = {
-      "Followers/Following": ["followers_1.json", "following.json"],
-      "Hide Story From": ["hide_story_from.json"],
-      "Pending Follow Requests": ["pending_follow_requests.json"],
-      "Restricted Profiles": ["restricted_profiles.json"],
-    }; // Define a mapping from selected labels to corresponding file name patterns
+    const fileArray = Array.isArray(files) ? files : [files];
 
-    // Loop through the selectedLabels
-    selectedLabels.forEach((label) => {
-      const filePatterns = labelToFileMap[label] || [];
-      const matchingFiles = fileArray.filter((file) =>
-        filePatterns.some((pattern) =>
-          file.name.toLowerCase().includes(pattern.toLowerCase())
-        )
-      );
-      console.log(`Files matching label "${label}":`, matchingFiles);
-      setMatchingFiles((prev) => [...prev, ...matchingFiles]); // Add matching files to the state
-    });
+  const labelToFileMap: Record<string, string[]> = {
+    "Followers/Following": ["followers_1.json", "following.json"],
+    "Hide Story From": ["hide_story_from.json"],
+    "Pending Follow Requests": ["pending_follow_requests.json"],
+    "Restricted Profiles": ["restricted_profiles.json"],
+  };
 
+  const matched: Record<string, File[]> = {};
+
+  selectedLabels.forEach((label) => {
+    const filePatterns = labelToFileMap[label] || [];
+    matched[label] = fileArray.filter((file) =>
+      filePatterns.some((pattern) =>
+        file.name.toLowerCase().includes(pattern.toLowerCase())
+      )
+    );
+  });
+
+  setMatchingFiles(matched);
     setLoadingState(true); // Set loading state to true
     setSteps(1); // Move to the next step
 
@@ -81,7 +88,8 @@ function App() {
 
     setTimeout(() => {
       setLoadingState(false);
-    }, 3000);
+    }, 2500);
+    setLoadingState(false)
 
     setSteps(1); // Move to the next step AFTER the 5-second delay
   };
@@ -89,7 +97,7 @@ function App() {
   return (
     <>
       <div className="flex w-full justify-center pt-2">
-        <div className="flex flex-col gap-6 max-w-[800px] w-full">
+        <div className="flex flex-col gap-6 max-w-[800px] w-full pb-4">
           {/* Section 1: Instagram Data Viewer*/}
           <div>
             <div className="flex gap-1">
@@ -123,16 +131,20 @@ function App() {
           {steps == 1 && !loadingState ? (
             <div>
               <h2 className="font-bold text-lg pb-2">Results</h2>
-              {selectedLabels.map((label, index) => (
-                <div key={index}>
-                  {/* {label === "Followers/Following" ? (<p>follower/following</p>) : null}
-                    {label === "Hide Story From" ? (<p>hide story</p>) : null} */}
-                  {label === "Pending Follow Requests" ? (
-                    <PendingFollowRequests file={matchingFiles} />
-                  ) : null}
-                  {/* {label === "Restricted Profiles" ? (<p>restricted profiles</p>) : null}                    */}
-                </div>
-              ))}
+              <div className="flex flex-col gap-2">
+                {selectedLabels.map((label, index) => (
+                  <div key={index}>
+                    {label === "Hide Story From" ? (
+                      <HideStoryFrom file={matchingFiles[label]} />
+                    ) : null}
+                    {label === "Pending Follow Requests" ? (
+                      <PendingFollowRequests file={matchingFiles[label]} />
+                    ) : null}
+                    {label === "Restricted Profiles" ? (<RestrictedProfiles file={matchingFiles[label]}/>) : null}        
+                    {label === "Followers/Following" ? (<NonFollowers file={matchingFiles[label]}/>) : null}           
+                  </div>
+                ))}
+              </div>
 
               {/* {console.log(selectedLabels)}
               {console.log(checkedItems)} */}

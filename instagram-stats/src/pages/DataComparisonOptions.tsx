@@ -32,8 +32,14 @@ export const DataComparisonOptions = ({
 
       <div className="flex flex-wrap col-span-2">
         {options.map((option, index) =>
-          option.label != "Pending Follow Requests" ? (
-            <div key={index} className="w-1/2 h-auto p-2 opacity-50 pointer-events-none">
+          option.label != "Pending Follow Requests" &&
+          option.label != "Hide Story From" &&
+          option.label != "Restricted Profiles" &&
+          option.label != "Followers/Following" ? (
+            <div
+              key={index}
+              className="w-1/2 h-auto p-2 opacity-50 pointer-events-none"
+            >
               <MiniCardProps
                 title={option.label}
                 description={option.description}
