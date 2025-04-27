@@ -1,7 +1,7 @@
 export const HowToUse = () => {
   const instructions = [
     {
-      icon: "https://example.com/icon1.png",
+      icon: "download.png",
       label: "Step 1",
       description: (
         <>
@@ -19,14 +19,14 @@ export const HowToUse = () => {
       ),
     },
     {
-      icon: "https://example.com/icon2.png",
+      icon: "upload-file.png",
       label: "Step 2",
-      description: "Select the data you want to analyze.",
+      description: "Upload the downloaded data here.",
     },
     {
-      icon: "https://example.com/icon3.png",
+      icon: "selection.png",
       label: "Step 3",
-      description: "Upload the downloaded data here.",
+      description: "Select the data you want to analyze.",
     },
   ];
 
@@ -40,7 +40,7 @@ export const HowToUse = () => {
               key={index}
               className="flex flex-col items-center justify-center w-1/4"
             >
-              <img className="w-5 h-5" src={instruction.icon} />
+              <img className="w-7 h-7 mb-2" src={instruction.icon} />
               <h4 className="text-md font-bold">{instruction.label}</h4>
               <p className="text-center text-sm text-gray-600">
                 {instruction.description}
