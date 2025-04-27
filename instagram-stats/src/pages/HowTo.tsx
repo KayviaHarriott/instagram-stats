@@ -5,7 +5,7 @@ export const HowToUse = () => {
       label: "Step 1",
       description: (
         <>
-          Download your Instagram data, click{" "}
+          Download your Instagram data as JSON, click{" "}
           <a
             href="https://help.instagram.com/181231772500920?helpref=faq_content"
             className="text-blue-500 underline"
