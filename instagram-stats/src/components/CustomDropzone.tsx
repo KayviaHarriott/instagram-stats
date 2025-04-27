@@ -40,7 +40,7 @@ export const CustomDropzone: React.FC<DropZoneProps> = ({
   return (
     <div
       {...getRootProps()}
-      className="border border-dashed border-gray-300 p-4 rounded-md flex flex-col items-center gap-2"
+      className="border border-dashed bg-white border-gray-300 p-4 rounded-md flex flex-col items-center gap-2"
       // style={{
       //   border: "2px dashed #aaa",
       //   padding: "2rem",

@@ -18,6 +18,7 @@ function App() {
   const [matchingFiles, setMatchingFiles] = useState<Record<string, File[]>>(
     {}
   );
+  const [fileUploaded, setFileUploaded] = useState(false); //to track if file is uploaded
 
   useEffect(() => {
     document.title = "IG Analyzer | Home";
@@ -57,6 +58,7 @@ function App() {
   //Handle file selection from the dropzone
   const handleFiles = (files: File[]) => {
     setFiles(files);
+    setFileUploaded(true);
   };
 
   // Handle changes in the checkboxes
@@ -107,16 +109,16 @@ function App() {
   return (
     <>
       <div className="flex w-full justify-center pt-2 bg-gray-50">
-        <div className="flex flex-col max-w-[800px] w-full pb-4 gap-2" >
+        <div className="flex flex-col max-w-[800px] w-full pb-4 gap-2">
           {/* Nav Bar */}
-         <div>
+          <div>
             <div className="fixed top-0 max-w-[800px] w-full z-10 mt-2">
               <NavBar />
             </div>
             <div className="max-w-[800px] w-full mt-2 invisible">
               <NavBar />
             </div>
-         </div>
+          </div>
 
           {/* Content */}
           <div className="flex flex-col gap-4 px-2">
@@ -126,7 +128,44 @@ function App() {
             {/* Section 1: Upload data*/}
             <CustomDropzone onFilesSelected={handleFiles} />
 
+            {/* Section 2: Data Comparison Options */}
+            {steps == 0 && !loadingState ? (
+              <div>
+                <DataComparisonOptions
+                  options={dataComparisonOptions}
+                  onCheckboxChange={handleCheckboxChange}
+                  onSubmit={() => handleSubmission(files)}
+                  isLoading={loadingState}
+                  hasSelectedOptions={selectedLabels.length > 0}
+                  fileUploaded={fileUploaded}
+                />
+              </div>
+            ) : null}
 
+            {/* Section 3: Results */}
+            {steps == 1 && !loadingState ? (
+              <div>
+                <h2 className="font-bold text-lg pb-2">Results</h2>
+                <div className="flex flex-col gap-2">
+                  {selectedLabels.map((label, index) => (
+                    <div key={index}>
+                      {label === "Hide Story From" ? (
+                        <HideStoryFrom file={matchingFiles[label]} />
+                      ) : null}
+                      {label === "Pending Follow Requests" ? (
+                        <PendingFollowRequests file={matchingFiles[label]} />
+                      ) : null}
+                      {label === "Restricted Profiles" ? (
+                        <RestrictedProfiles file={matchingFiles[label]} />
+                      ) : null}
+                      {label === "Followers/Following" ? (
+                        <NonFollowers file={matchingFiles[label]} />
+                      ) : null}
+                    </div>
+                  ))}
+                </div>
+              </div>
+            ) : null}
           </div>
 
           {loadingState && (
@@ -134,48 +173,6 @@ function App() {
               <CircularProgress />
             </Box>
           )}
-
-          {/* Section 2: Data Comparison Options */}
-          {steps == 0 && !loadingState ? (
-            <div>
-              <DataComparisonOptions
-                options={dataComparisonOptions}
-                onCheckboxChange={handleCheckboxChange}
-                onSubmit={() => handleSubmission(files)}
-                isLoading={loadingState}
-                hasSelectedOptions={selectedLabels.length > 0}
-              />
-            </div>
-          ) : null}
-
-          {/* Section 3: Results */}
-          {steps == 1 && !loadingState ? (
-            <div>
-              <h2 className="font-bold text-lg pb-2">Results</h2>
-              <div className="flex flex-col gap-2">
-                {selectedLabels.map((label, index) => (
-                  <div key={index}>
-                    {label === "Hide Story From" ? (
-                      <HideStoryFrom file={matchingFiles[label]} />
-                    ) : null}
-                    {label === "Pending Follow Requests" ? (
-                      <PendingFollowRequests file={matchingFiles[label]} />
-                    ) : null}
-                    {label === "Restricted Profiles" ? (
-                      <RestrictedProfiles file={matchingFiles[label]} />
-                    ) : null}
-                    {label === "Followers/Following" ? (
-                      <NonFollowers file={matchingFiles[label]} />
-                    ) : null}
-                  </div>
-                ))}
-              </div>
-
-              {/* {console.log(selectedLabels)}
-              {console.log(checkedItems)} */}
-              {/* <p className="text-gray-500 text-sm pb-2"></p> */}
-            </div>
-          ) : null}
         </div>
       </div>
     </>

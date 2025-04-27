@@ -6,6 +6,7 @@ import { CustomCheckBox } from "../components/CustomCheckBox";
 interface DataComparisonOption {
   label: string;
   description: string;
+ 
 }
 
 interface DataComparisonOptionsProps {
@@ -14,6 +15,7 @@ interface DataComparisonOptionsProps {
   onSubmit: () => void;
   isLoading?: boolean;
   hasSelectedOptions?: boolean;
+  fileUploaded: boolean;
 }
 
 export const DataComparisonOptions = ({
@@ -22,15 +24,18 @@ export const DataComparisonOptions = ({
   onSubmit,
   isLoading = false,
   hasSelectedOptions = false,
+  fileUploaded = false,
 }: DataComparisonOptionsProps) => {
   return (
-    <div>
-      <h2 className="font-bold text-lg">Data Comparison Options</h2>
-      <p className="text-gray-500 text-sm pb-2">
-        Select which data comparisons you'd like to analyze:
-      </p>
+    <div className="flex flex-col gap-4 pt-3 pb-4 px-4 bg-white rounded-2xl">
+      <div className="flex flex-col">
+        <h2 className="text-lg font-bold text-gray-700">Data Comparison Options</h2>
+        <p className="text-gray-500 text-sm">
+          Select which data comparisons you'd like to analyze:
+        </p>
+      </div>
 
-      <div className="flex flex-wrap col-span-2">
+      <div className="flex flex-col md:flex-row md:flex-wrap md:col-span-2">
         {options.map((option, index) =>
           option.label != "Pending Follow Requests" &&
           option.label != "Hide Story From" &&
@@ -38,7 +43,7 @@ export const DataComparisonOptions = ({
           option.label != "Followers/Following" ? (
             <div
               key={index}
-              className="w-1/2 h-auto p-2 opacity-50 pointer-events-none"
+              className="h-auto p-2 opacity-50 pointer-events-none"
             >
               <MiniCardProps
                 title={option.label}
@@ -54,7 +59,7 @@ export const DataComparisonOptions = ({
               />
             </div>
           ) : (
-            <div key={index} className="w-1/2 h-auto p-2">
+            <div key={index} className="md:w-1/2 h-auto p-2">
               <MiniCardProps
                 title={option.label}
                 description={option.description}
@@ -78,7 +83,7 @@ export const DataComparisonOptions = ({
           color="primary"
           sx={{ boxShadow: "none", gap: 1, backgroundColor: "black" }}
           onClick={onSubmit}
-          disabled={isLoading || !hasSelectedOptions}
+          disabled={isLoading || !(hasSelectedOptions && fileUploaded)}
         >
           {isLoading ? (
             <CircularProgress size={24} color="inherit" />

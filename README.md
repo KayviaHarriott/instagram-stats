@@ -57,6 +57,7 @@ npm run dev
 - add check for if folder is uploaded to start analyze data button
 - make mobile responsive
 - add dark mode
+- add search bar for not following back and data analysis
 
 ## Notice
 
