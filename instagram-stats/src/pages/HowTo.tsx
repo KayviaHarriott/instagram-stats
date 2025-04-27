@@ -32,19 +32,21 @@ export const HowToUse = () => {
 
   return (
     <>
-      <div className="flex flex-col items-center gap-4 pt-2 pb-4 px-2 bg-white rounded-2xl">
-        <h2 className="text-md font-bold text-gray-700">How it Works</h2>
-        <div className="flex justify-center gap-6 mt-2">
+      <div className="flex flex-col items-center gap-4 pt-3 pb-4 px-2 bg-white rounded-2xl">
+        <h2 className="text-lg font-bold text-gray-700">How it Works</h2>
+        <div className="flex flex-col md:flex-row md:justify-center gap-6 mt-2">
           {instructions.map((instruction, index) => (
             <div
               key={index}
-              className="flex flex-col items-center justify-center w-1/4"
+              className="flex gap-3 md:gap-0 md:flex-col items-center md:justify-center md:w-1/4"
             >
-              <img className="w-7 h-7 mb-2" src={instruction.icon} />
-              <h4 className="text-md font-bold">{instruction.label}</h4>
-              <p className="text-center text-sm text-gray-600">
-                {instruction.description}
-              </p>
+              <img className="w-7 h-7 md:mb-2" src={instruction.icon} />
+              <div className="flex flex-col">
+                  <h4 className="md:text-center text-md font-bold">{instruction.label}</h4>
+                  <p className="md:text-center text-sm text-gray-600">
+                    {instruction.description}
+                  </p>
+              </div>
             </div>
           ))}
         </div>

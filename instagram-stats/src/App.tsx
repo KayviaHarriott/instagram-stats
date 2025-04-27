@@ -119,7 +119,7 @@ function App() {
          </div>
 
           {/* Content */}
-          <div className="flex flex-col gap-4">
+          <div className="flex flex-col gap-4 px-2">
             {/* How To  */}
             <HowToUse />
 
