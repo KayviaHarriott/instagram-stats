@@ -56,6 +56,7 @@ npm run dev
 - could use characters to make layout fun
 - add check for if folder is uploaded to start analyze data button
 - make mobile responsive
+- add dark mode
 
 ## Notice
 
