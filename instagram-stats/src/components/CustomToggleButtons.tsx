@@ -1,28 +1,43 @@
 import * as React from "react";
 import ToggleButton from "@mui/material/ToggleButton";
 import ToggleButtonGroup from "@mui/material/ToggleButtonGroup";
+import { useState
 
+ } from "react";
 interface CustomToggleButtonsProps {
   options: { label: string; description: string }[];
+  onCheckboxChange: (label: string, isChecked: boolean) => void; // <-- accept the callback!
+
 }
 
 export const CustomToggleButtons: React.FC<CustomToggleButtonsProps> = ({
   options,
+  onCheckboxChange
 }) => {
-  const [formats, setFormats] = React.useState(() => ["bold", "italic"]);
+  // const [formats, setFormats] = React.useState(() => ["bold", "italic"]);
+  const [selectedLabels, setSelectedLabels] = useState<string[]>([]);
 
   const handleFormat = (
     _event: React.MouseEvent<HTMLElement>,
     newFormats: string[]
   ) => {
-    setFormats(newFormats);
+    // setFormats(newFormats);
+    // Figure out what changed
+    const added = newFormats.filter(x => !selectedLabels.includes(x));
+    const removed = selectedLabels.filter(x => !newFormats.includes(x));
+
+    // Notify parent for each change
+    added.forEach(label => onCheckboxChange(label, true));
+    removed.forEach(label => onCheckboxChange(label, false));
+
+    // Update local state
+    setSelectedLabels(newFormats);
   };
 
   return (
     <div>
-      {" "}
       <ToggleButtonGroup
-        value={formats}
+        value={selectedLabels}
         onChange={handleFormat}
         aria-label="text formatting"
         className="flex flex-col gap-2"
@@ -35,11 +50,12 @@ export const CustomToggleButtons: React.FC<CustomToggleButtonsProps> = ({
             aria-label={option.label}
             // disabled
             sx={{
-                justifyContent: "flex-start", // 🧠 makes content left-aligned inside button
+                justifyContent: "flex-start", 
                 textAlign: "left",
                 textTransform: "none",
-                flexDirection: "column", // 🧠 stack label and description vertically
-                alignItems: "flex-start", // 🧠 align left instead of center
+                flexDirection: "column", 
+                alignItems: "flex-start",
+                width: "100%",
               }}
           >
             <div>

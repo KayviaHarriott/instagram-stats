@@ -38,7 +38,7 @@ export const DataComparisonOptions = ({
       </div>
 
       <div className="md:hidden">
-        <CustomToggleButtons options={options} />
+        <CustomToggleButtons options={options} onCheckboxChange={onCheckboxChange} />
       </div>
       {/* <div className="flex w-full flex-row flex-wrap col-span-2"> */}
       <div className="md:flex col-span-2 flex-wrap hidden">
