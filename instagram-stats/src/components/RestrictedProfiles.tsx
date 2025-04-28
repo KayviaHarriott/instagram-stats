@@ -65,6 +65,7 @@ export const RestrictedProfiles: React.FC<RestrictedProfilesProps> = ({
 
   return (
     <CustomCard
+      description="Profiles you've restricted on your account:"
       content={<CardGroup children={entries} dateDescription="Requested on" />}
     />
   );

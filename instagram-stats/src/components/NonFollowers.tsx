@@ -1,6 +1,7 @@
 import React, { useEffect, useState, useRef } from "react";
 import { CustomCard } from "./Card";
 import { CardGroup } from "./CardGroup";
+import { CustomTextField } from "./CustomTextField";
 
 interface NonFollowersProps {
   file?: File | File[];
@@ -15,6 +16,7 @@ export const NonFollowers: React.FC<NonFollowersProps> = ({ file }) => {
   const [notFollowingBack, setNotFollowingBack] = useState<UnfollowedEntry[]>(
     []
   );
+  const [searchQuery, setSearchQuery] = useState(""); // New state for search query
   const hasProcessed = useRef(false);
 
   useEffect(() => {
@@ -42,7 +44,7 @@ export const NonFollowers: React.FC<NonFollowersProps> = ({ file }) => {
                 return {
                   href: entry.href,
                   value: entry.value,
-                  timestamp: entry.timestamp
+                  timestamp: entry.timestamp,
                 };
               });
             }
@@ -71,13 +73,34 @@ export const NonFollowers: React.FC<NonFollowersProps> = ({ file }) => {
       reader.readAsText(f);
     });
   }, [file]);
+
+  // Filtered data based on search query
+  const filteredNotFollowingBack = notFollowingBack.filter((person) =>
+    person.value.toLowerCase().includes(searchQuery.toLowerCase())
+  );
+  
   return (
-    <CustomCard
-      content={
-        <div>
-          <CustomCard content={<CardGroup dateDescription="Followed on" children={notFollowingBack} />} />
-        </div>
-      }
-    />
+    <>
+     <CustomTextField
+        label={"Search through non-followers"}
+        value={searchQuery}
+        onChange={(e) => setSearchQuery(e.target.value)} // Update the search query on input change
+      />
+      <CustomCard
+        content={
+          <div>
+            <CustomCard
+              content={
+                <CardGroup
+                  dateDescription="Followed on"
+                  children={filteredNotFollowingBack} // Render filtered data
+                />
+              }
+            />
+          </div>
+        }
+      />
+    </>
+   
   );
 };
