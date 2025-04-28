@@ -4,13 +4,15 @@ import { OpenInNew } from "@mui/icons-material";
 
 interface MiniUserCardsProps {
   username: string;
-  description: string;
+  dateDescription?: string | undefined | null;
+  date?: string;
   link: string;
 }
 
 export const MiniUserCards: React.FC<MiniUserCardsProps> = ({
   username,
-  description,
+  date,
+  dateDescription,
   link,
 }) => {
   return (
@@ -21,7 +23,7 @@ export const MiniUserCards: React.FC<MiniUserCardsProps> = ({
       >
         <div>
           <p className="font-bold">@{username}</p>
-          <p className="text-sm text-gray-600">Sent on:{description}</p>
+          {date && <p className="text-sm text-gray-600">{dateDescription}: {date}</p>}
         </div>
         <a href={link} target="_blank" rel="noopener noreferrer">
           <OpenInNew sx={{ padding: 0, height: 20 }} />

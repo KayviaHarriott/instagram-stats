@@ -1,7 +1,6 @@
 import React, { useEffect, useState, useRef } from "react";
 import { CustomCard } from "./Card";
-import { Box } from "@mui/material";
-import { OpenInNew } from "@mui/icons-material";
+import { CardGroup } from "./CardGroup";
 
 interface PendingFollowRequestsProps {
   file?: File | File[];
@@ -70,33 +69,7 @@ export const PendingFollowRequests: React.FC<PendingFollowRequestsProps> = ({
         title="Pending Follow Requests"
         description=""
         content={
-          <div className="flex flex-wrap gap-2">
-            {requests.map((req, index) => (
-              <div key={index}>
-                <div>
-                  <Box
-                    sx={{ boxShadow: "1px 1px 3px 1px rgba(0,0,0,0.1)" }}
-                    className="flex justify-between items-center gap-4 border border-gray-200 rounded-sm w-fit p-3"
-                  >
-                    <div>
-                      <p className="font-bold">@{req.value}</p>
-                      <p className="text-sm text-gray-600">
-                        Sent on:{" "}
-                        {new Date(req.timestamp * 1000).toLocaleString()}
-                      </p>
-                    </div>
-                    <a
-                      href={req.href}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                    >
-                      <OpenInNew sx={{ padding: 0, height: 20 }} />
-                    </a>
-                  </Box>
-                </div>
-              </div>
-            ))}
-          </div>
+          <CardGroup children={requests} dateDescription="Requested on" />
         }
       />
     </>

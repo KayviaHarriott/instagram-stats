@@ -44,29 +44,6 @@ export const DataComparisonOptions = ({
       <div className="md:flex col-span-2 flex-wrap hidden">
         {options.map(
           (option, index) => (
-            // option.label != "Pending Follow Requests" &&
-            // option.label != "Hide Story From" &&
-            // option.label != "Restricted Profiles" &&
-            // option.label != "Followers/Following" ? (
-            //   <div
-            //     key={index}
-            //     className="h-auto p-2 opacity-50 pointer-events-none"
-            //   >
-            //     <MiniCardProps
-            //       title={option.label}
-            //       description={option.description}
-            //       checkboxArea={
-            //         <CustomCheckBox
-            //           defaultChecked={false}
-            //           onChange={(isChecked) =>
-            //             onCheckboxChange(option.label, isChecked)
-            //           }
-            //         />
-            //       }
-            //     />
-            //   </div>
-            // ) : (
-
             <div key={index} className="md:w-1/2 h-auto p-2">
               <MiniCardProps
                 title={option.label}
@@ -82,8 +59,6 @@ export const DataComparisonOptions = ({
               />
             </div>
           )
-
-          // )
         )}
       </div>
 

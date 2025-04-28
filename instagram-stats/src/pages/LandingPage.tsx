@@ -8,6 +8,7 @@ import { RestrictedProfiles } from "../components/RestrictedProfiles";
 import { NonFollowers } from "../components/NonFollowers";
 import { NavBar } from "../components/NavBar";
 import { HowToUse } from "../pages/HowTo";
+import { CustomAccordion } from "../components/CustomAccordion";
 
 export const LandingPage = () => {
   const [files, setFiles] = useState<File[]>([]); //to track uploaded files
@@ -24,6 +25,7 @@ export const LandingPage = () => {
     console.log("___Page Loaded___");
   }, []);
 
+ 
   //Extract selected labels based on checked items
   const selectedLabels = Object.entries(checkedItems)
     .filter(([, isChecked]) => isChecked)
@@ -152,8 +154,19 @@ export const LandingPage = () => {
                         <HideStoryFrom file={matchingFiles[label]} />
                       ) : null}
                       {label === "Pending Follow Requests" ? (
-                        <PendingFollowRequests file={matchingFiles[label]} />
-                      ) : null}
+                        <CustomAccordion
+                          items={[
+                            {
+                              label: "Pending Follow Requests",
+                              content: (
+                                
+                                    <PendingFollowRequests file={matchingFiles[label]} />
+                              ),
+                            },
+                          ]}
+                        />
+                      ) : // 
+                      null}
                       {label === "Restricted Profiles" ? (
                         <RestrictedProfiles file={matchingFiles[label]} />
                       ) : null}
@@ -176,5 +189,4 @@ export const LandingPage = () => {
       </div>
     </>
   );
-}
-
+};

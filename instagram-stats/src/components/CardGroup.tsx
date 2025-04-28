@@ -2,9 +2,10 @@ import { MiniUserCards } from "./MiniUserCards";
 
 interface CardGroupProps {
   children: { value: string; timestamp: number; href: string }[];
+  dateDescription: string;
 }
 
-export const CardGroup: React.FC<CardGroupProps> = ({ children }) => {
+export const CardGroup: React.FC<CardGroupProps> = ({ children, dateDescription }) => {
   return (
     <div>
       <div className="flex flex-wrap gap-1">
@@ -26,7 +27,8 @@ export const CardGroup: React.FC<CardGroupProps> = ({ children }) => {
                 <MiniUserCards
                   key={index}
                   username={`${req.value}`}
-                  description={`${new Date(
+                  dateDescription={dateDescription ? dateDescription : null}
+                  date={`${new Date(
                     req.timestamp * 1000
                   ).toLocaleString()}`}
                   link={req.href}
