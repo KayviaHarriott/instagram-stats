@@ -133,11 +133,7 @@ export const LandingPage = () => {
                 <Button
                   sx={{ textTransform: "none" }}
                   className="flex justify-center items-center gap-1"
-                  onClick={() => {
-                    setSteps(0); // Reset the step to 0
-                    setFiles([]); // Clear the files
-                    setFileUploaded(false); // Optionally reset fileUploaded if necessary
-                  }}
+                  onClick={() => window.location.reload()}
                 >
                   <Replay />
                   Reupload
