@@ -25,7 +25,6 @@ export const LandingPage = () => {
     console.log("___Page Loaded___");
   }, []);
 
- 
   //Extract selected labels based on checked items
   const selectedLabels = Object.entries(checkedItems)
     .filter(([, isChecked]) => isChecked)
@@ -151,7 +150,16 @@ export const LandingPage = () => {
                   {selectedLabels.map((label, index) => (
                     <div key={index}>
                       {label === "Hide Story From" ? (
-                        <HideStoryFrom file={matchingFiles[label]} />
+                        <CustomAccordion
+                          items={[
+                            {
+                              label: "Story Hidden From",
+                              content: (
+                                <HideStoryFrom file={matchingFiles[label]} />
+                              ),
+                            },
+                          ]}
+                        />
                       ) : null}
                       {label === "Pending Follow Requests" ? (
                         <CustomAccordion
@@ -159,19 +167,40 @@ export const LandingPage = () => {
                             {
                               label: "Pending Follow Requests",
                               content: (
-                                
-                                    <PendingFollowRequests file={matchingFiles[label]} />
+                                <PendingFollowRequests
+                                  file={matchingFiles[label]}
+                                />
                               ),
                             },
                           ]}
                         />
-                      ) : // 
+                      ) : //
                       null}
                       {label === "Restricted Profiles" ? (
-                        <RestrictedProfiles file={matchingFiles[label]} />
+                        <CustomAccordion
+                          items={[
+                            {
+                              label: "Restricted Profiles",
+                              content: (
+                                <RestrictedProfiles
+                                  file={matchingFiles[label]}
+                                />
+                              ),
+                            },
+                          ]}
+                        />
                       ) : null}
                       {label === "Followers/Following" ? (
-                        <NonFollowers file={matchingFiles[label]} />
+                        <CustomAccordion
+                          items={[
+                            {
+                              label: "Not Follow You Back",
+                              content: (
+                                <NonFollowers file={matchingFiles[label]} />
+                              ),
+                            },
+                          ]}
+                        />
                       ) : null}
                     </div>
                   ))}

@@ -1,7 +1,6 @@
 import React, { useEffect, useState, useRef } from "react";
 import { CustomCard } from "./Card";
-import { Box } from "@mui/material";
-import { OpenInNew } from "@mui/icons-material";
+import { CardGroup } from "./CardGroup";
 
 interface RestrictedProfilesProps {
   file?: File | File[];
@@ -23,7 +22,9 @@ interface RestrictedEntry {
   timestamp: number;
 }
 
-export const RestrictedProfiles: React.FC<RestrictedProfilesProps> = ({ file }) => {
+export const RestrictedProfiles: React.FC<RestrictedProfilesProps> = ({
+  file,
+}) => {
   const [entries, setEntries] = useState<RestrictedEntry[]>([]);
   const hasProcessed = useRef(false);
 
@@ -40,7 +41,8 @@ export const RestrictedProfiles: React.FC<RestrictedProfilesProps> = ({ file }) 
       reader.onload = (event) => {
         try {
           const json = JSON.parse(event.target?.result as string);
-          const data: InstagramRestrictedRaw[] = json.relationships_restricted_users;
+          const data: InstagramRestrictedRaw[] =
+            json.relationships_restricted_users;
 
           const parsedEntries: RestrictedEntry[] = data.map((item) => {
             const entry = item.string_list_data[0];
@@ -63,33 +65,7 @@ export const RestrictedProfiles: React.FC<RestrictedProfilesProps> = ({ file }) 
 
   return (
     <CustomCard
-      title="Restricted Profiles"
-      description="Accounts you've restricted on Instagram."
-      content={
-        <div className="flex flex-wrap gap-2">
-          {entries.map((entry, index) => (
-            <Box
-              key={index}
-              sx={{ boxShadow: "1px 1px 3px 1px rgba(0,0,0,0.1)" }}
-              className="flex justify-between items-center gap-4 border border-gray-200 rounded-sm w-fit p-3"
-            >
-              <div>
-                <p className="font-bold">@{entry.value}</p>
-                <p className="text-sm text-gray-600">
-                  Restricted since: {new Date(entry.timestamp * 1000).toLocaleString()}
-                </p>
-              </div>
-              <a
-                href={entry.href}
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                <OpenInNew sx={{ padding: 0, height: 20 }} />
-              </a>
-            </Box>
-          ))}
-        </div>
-      }
+      content={<CardGroup children={entries} dateDescription="Requested on" />}
     />
   );
 };

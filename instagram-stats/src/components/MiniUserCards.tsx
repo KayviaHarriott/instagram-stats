@@ -5,7 +5,7 @@ import { OpenInNew } from "@mui/icons-material";
 interface MiniUserCardsProps {
   username: string;
   dateDescription?: string | undefined | null;
-  date?: string;
+  date?: string | null;
   link: string;
 }
 

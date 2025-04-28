@@ -66,8 +66,6 @@ export const PendingFollowRequests: React.FC<PendingFollowRequestsProps> = ({
   return (
     <>
       <CustomCard
-        title="Pending Follow Requests"
-        description=""
         content={
           <CardGroup children={requests} dateDescription="Requested on" />
         }

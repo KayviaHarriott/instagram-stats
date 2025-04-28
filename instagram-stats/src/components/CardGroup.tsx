@@ -1,8 +1,8 @@
 import { MiniUserCards } from "./MiniUserCards";
 
 interface CardGroupProps {
-  children: { value: string; timestamp: number; href: string }[];
-  dateDescription: string;
+  children: { value: string; timestamp?: number; href: string }[];
+  dateDescription?: string;
 }
 
 export const CardGroup: React.FC<CardGroupProps> = ({ children, dateDescription }) => {
@@ -10,7 +10,7 @@ export const CardGroup: React.FC<CardGroupProps> = ({ children, dateDescription 
     <div>
       <div className="flex flex-wrap gap-1">
         {(children ?? [])
-          .reduce<{ value: string; timestamp: number; href: string }[][]>(
+          .reduce<{ value: string; timestamp?: number; href: string }[][]>(
             (chunks, req, index) => {
               const chunkIndex = Math.floor(index / 3);
               if (!chunks[chunkIndex]) {
@@ -28,9 +28,9 @@ export const CardGroup: React.FC<CardGroupProps> = ({ children, dateDescription 
                   key={index}
                   username={`${req.value}`}
                   dateDescription={dateDescription ? dateDescription : null}
-                  date={`${new Date(
+                  date={req.timestamp ? `${new Date(
                     req.timestamp * 1000
-                  ).toLocaleString()}`}
+                  ).toLocaleString()}` : null}
                   link={req.href}
                 />
               ))}
