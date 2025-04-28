@@ -194,7 +194,7 @@ export const LandingPage = () => {
                         <CustomAccordion
                           items={[
                             {
-                              label: "Not Follow You Back",
+                              label: "NonFollowers",
                               content: (
                                 <NonFollowers file={matchingFiles[label]} />
                               ),

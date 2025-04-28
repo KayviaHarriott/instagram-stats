@@ -14,7 +14,7 @@ export const CustomAccordion: React.FC<CustomAccordionProps> = ({items}) => {
   return (
     <div>
      {items.map((item, index) => (
-        <Accordion defaultExpanded key={index}>
+        <Accordion sx={{boxBorder: "none"}} defaultExpanded={index != 0 ? false : true} key={index}>
         <AccordionSummary
           expandIcon={<ExpandMoreIcon />}
           aria-controls="panel1-content"
