@@ -42,6 +42,7 @@ export const NonFollowers: React.FC<NonFollowersProps> = ({ file }) => {
                 return {
                   href: entry.href,
                   value: entry.value,
+                  timestamp: entry.timestamp
                 };
               });
             }
@@ -74,7 +75,7 @@ export const NonFollowers: React.FC<NonFollowersProps> = ({ file }) => {
     <CustomCard
       content={
         <div>
-          <CustomCard content={<CardGroup children={notFollowingBack} />} />
+          <CustomCard content={<CardGroup dateDescription="Followed on" children={notFollowingBack} />} />
         </div>
       }
     />
