@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { CustomDropzone } from "../components/CustomDropzone";
-import { Box, CircularProgress } from "@mui/material";
+import { Box, Button, CircularProgress } from "@mui/material";
 import { DataComparisonOptions } from "../pages/DataComparisonOptions";
 import { PendingFollowRequests } from "../components/PendingFollowRequests";
 import { HideStoryFrom } from "../components/HiddenStory";
@@ -9,6 +9,7 @@ import { NonFollowers } from "../components/NonFollowers";
 import { NavBar } from "../components/NavBar";
 import { HowToUse } from "../pages/HowTo";
 import { CustomAccordion } from "../components/CustomAccordion";
+import { Replay } from "@mui/icons-material";
 
 export const LandingPage = () => {
   const [files, setFiles] = useState<File[]>([]); //to track uploaded files
@@ -126,7 +127,23 @@ export const LandingPage = () => {
             <HowToUse />
 
             {/* Section 1: Upload data*/}
-            <CustomDropzone onFilesSelected={handleFiles} />
+            <div className="flex flex-col gap-1">
+              <CustomDropzone onFilesSelected={handleFiles} />
+              <div className="w-full flex justify-end">
+                <Button
+                  sx={{ textTransform: "none" }}
+                  className="flex justify-center items-center gap-1"
+                  onClick={() => {
+                    setSteps(0); // Reset the step to 0
+                    setFiles([]); // Clear the files
+                    setFileUploaded(false); // Optionally reset fileUploaded if necessary
+                  }}
+                >
+                  <Replay />
+                  Reupload
+                </Button>
+              </div>
+            </div>
 
             {/* Section 2: Data Comparison Options */}
             {steps == 0 && !loadingState ? (
