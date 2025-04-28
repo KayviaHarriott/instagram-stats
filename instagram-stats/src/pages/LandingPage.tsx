@@ -147,63 +147,59 @@ export const LandingPage = () => {
               <div>
                 <h2 className="font-bold text-lg pb-2">Results</h2>
                 <div className="flex flex-col gap-2">
-                  {selectedLabels.map((label, index) => (
-                    <div key={index}>
-                      {label === "Hide Story From" ? (
-                        <CustomAccordion
-                          items={[
-                            {
-                              label: "Story Hidden From",
-                              content: (
-                                <HideStoryFrom file={matchingFiles[label]} />
-                              ),
-                            },
-                          ]}
-                        />
-                      ) : null}
-                      {label === "Pending Follow Requests" ? (
-                        <CustomAccordion
-                          items={[
-                            {
-                              label: "Pending Follow Requests",
-                              content: (
-                                <PendingFollowRequests
-                                  file={matchingFiles[label]}
-                                />
-                              ),
-                            },
-                          ]}
-                        />
-                      ) : //
-                      null}
-                      {label === "Restricted Profiles" ? (
-                        <CustomAccordion
-                          items={[
-                            {
-                              label: "Restricted Profiles",
-                              content: (
-                                <RestrictedProfiles
-                                  file={matchingFiles[label]}
-                                />
-                              ),
-                            },
-                          ]}
-                        />
-                      ) : null}
-                      {label === "Followers/Following" ? (
-                        <CustomAccordion
-                          items={[
-                            {
-                              label: "NonFollowers",
-                              content: (
-                                <NonFollowers file={matchingFiles[label]} />
-                              ),
-                            },
-                          ]}
-                        />
-                      ) : null}
-                    </div>
-                  ))}
+                  <CustomAccordion
+                    items={selectedLabels
+                      .map((label, index) => {
+                        const accordionItems = [];
+
+                        if (label === "Hide Story From") {
+                          accordionItems.push({
+                            label: "Story Hidden From",
+                            content: (
+                              <HideStoryFrom file={matchingFiles[label]} />
+                            ),
+                          });
+                        }
+
+                        if (label === "Pending Follow Requests") {
+                          accordionItems.push({
+                            label: "Pending Follow Requests",
+                            content: (
+                              <PendingFollowRequests
+                                file={matchingFiles[label]}
+                              />
+                            ),
+                          });
+                        }
+
+                        if (label === "Restricted Profiles") {
+                          accordionItems.push({
+                            label: "Restricted Profiles",
+                            content: (
+                              <RestrictedProfiles file={matchingFiles[label]} />
+                            ),
+                          });
+                        }
+
+                        if (label === "Followers/Following") {
+                          accordionItems.push({
+                            label: "NonFollowers",
+                            content: (
+                              <NonFollowers file={matchingFiles[label]} />
+                            ),
+                          });
+                        }
+
+                        return accordionItems.length > 0
+                          ? accordionItems.map((item, itemIndex) => ({
+                              ...item,
+                              key: `${index}-${itemIndex}`, // Use both label and itemIndex for the key
+                            }))
+                          : null;
+                      })
+                      .filter((item) => item !== null) // Filter out any null values
+                      .flat()} // Use flat() to flatten the array
+                  />
                 </div>
               </div>
             ) : null}
